@@ -52,6 +52,7 @@ fn letters_upto(end: char) -> Vec<char> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
     fn letters_upto_singleton() {
         assert_eq!(letters_upto('A'), vec!['A']);
@@ -146,5 +147,4 @@ E       E
             .trim()
         );
     }
-
 }
