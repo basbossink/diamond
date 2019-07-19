@@ -56,10 +56,10 @@ fn pad_right(to_pad: &str, padded_size: usize) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use proptest::prelude::*;
 
     mod letters_upto {
         use super::*;
+
         macro_rules! test_letters_upto {
             ($name:ident, $input:expr, $expected:expr) => {
                 #[test]
@@ -76,6 +76,7 @@ mod tests {
 
     mod pad {
         use super::*;
+        use proptest::prelude::*;
 
         proptest! {
 
