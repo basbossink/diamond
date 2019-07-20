@@ -61,17 +61,21 @@ mod tests {
         use super::*;
 
         macro_rules! test_letters_upto {
-            ($name:ident, $input:expr, $expected:expr) => {
-                #[test]
-                fn $name() {
-                    assert_eq!(letters_upto($input), $expected);
-                }
-            };
+           ( $(($name:ident, $input:expr, $expected:expr)),* ) => {
+               $(
+                   #[test]
+                   fn $name() {
+                       assert_eq!(letters_upto($input), $expected);
+                   }
+               )*
+           };
         }
 
-        test_letters_upto!(a, 'A', vec!['A']);
-        test_letters_upto!(c, 'C', vec!['A', 'B', 'C']);
-        test_letters_upto!(z, 'Z', UPPERS.chars().collect::<Vec<char>>());
+        test_letters_upto!(
+            (a, 'A', vec!['A']),
+            (c, 'C', vec!['A', 'B', 'C']),
+            (z, 'Z', UPPERS.chars().collect::<Vec<char>>())
+        );
     }
 
     mod pad {
@@ -108,23 +112,27 @@ mod tests {
         }
 
         macro_rules! test_pad {
-            ($name:ident, $fname:ident, $input:expr, $padded_size:expr, $expected:expr) => {
-                #[test]
-                fn $name() {
-                    let actual = $fname(&$input.to_string(), $padded_size);
-                    assert_eq!($expected, actual);
-                }
+            ( $(($name:ident, $fname:ident, $input:expr, $padded_size:expr, $expected:expr)),* ) => {
+                $(
+                    #[test]
+                    fn $name() {
+                        let actual = $fname(&$input.to_string(), $padded_size);
+                        assert_eq!($expected, actual);
+                    }
+                )*
             };
         }
 
-        test_pad!(right_1, pad_right, " a", 3usize, " a ");
-        test_pad!(right_2, pad_right, "a ", 4usize, "a   ");
-        test_pad!(right_3, pad_right, "a", 5usize, "a    ");
-        test_pad!(right_4, pad_right, " a", 8usize, " a      ");
-        test_pad!(left_1, pad_left, "a", 3usize, "  a");
-        test_pad!(left_2, pad_left, "  a", 4usize, "   a");
-        test_pad!(left_3, pad_left, "a", 2usize, " a");
-        test_pad!(left_4, pad_left, "a", 10usize, "         a");
+        test_pad!(
+            (right_1, pad_right, " a", 3usize, " a "),
+            (right_2, pad_right, "a ", 4usize, "a   "),
+            (right_3, pad_right, "a", 5usize, "a    "),
+            (right_4, pad_right, " a", 8usize, " a      "),
+            (left_1, pad_left, "a", 3usize, "  a"),
+            (left_2, pad_left, "  a", 4usize, "   a"),
+            (left_3, pad_left, "a", 2usize, " a"),
+            (left_4, pad_left, "a", 10usize, "         a")
+        );
     }
 
     mod diamond {
