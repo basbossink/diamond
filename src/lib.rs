@@ -8,6 +8,17 @@ fn letters_upto(end: char) -> Vec<char> {
     }
 }
 
+pub fn diamond(end: char) -> String {
+    let upper = upper_diamond(end);
+    upper
+        .iter()
+        .chain(upper.iter().rev().skip(1))
+        .flat_map(|s| s.chars())
+        .collect::<String>()
+        .trim_end()
+        .to_string()
+}
+
 fn upper_diamond(end: char) -> Vec<String> {
     let letters = letters_upto(end);
     let half_width = letters.len();
@@ -130,6 +141,36 @@ mod tests {
                 upper_diamond,
                 'D',
                 vec!["   A\n", "  B B\n", " C   C\n", "D     D\n"]
+            );
+        }
+        mod full {
+            use super::*;
+            test_diamond!(a, diamond, 'A', "A");
+            test_diamond!(
+                d,
+                diamond,
+                'D',
+                "   A
+  B B
+ C   C
+D     D
+ C   C
+  B B
+   A"
+            );
+            test_diamond!(
+                e,
+                diamond,
+                'E',
+                "    A
+   B B
+  C   C
+ D     D
+E       E
+ D     D
+  C   C
+   B B
+    A"
             );
         }
     }
