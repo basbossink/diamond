@@ -128,8 +128,7 @@ mod tests {
                 #[test]
                 fn $name() {
                     let result = $fname($input);
-                    let actual = result;
-                    assert_eq!($expected, actual);
+                    assert_eq!($expected, result);
                 }
             };
         }
