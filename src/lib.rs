@@ -1,7 +1,14 @@
 static UPPERS: &str = "ABCDEFHIJKLMNOPQRSTUVWXYZ";
 
 pub fn diamond(letter: char) -> String {
-    format!("{0}{1}", upper_diamond(letter), lower_diamond(letter))
+    let upper = upper_diamond(letter);
+    let lower = upper
+        .lines()
+        .rev()
+        .skip(1)
+        .collect::<Vec<&str>>()
+        .join("\n");
+    format!("{0}{1}", upper, lower)
 }
 
 fn upper_diamond(letter: char) -> String {
@@ -13,26 +20,6 @@ fn upper_diamond(letter: char) -> String {
         result.push_str(&left);
         if index != 0 {
             result.push_str(&format!("{0:>width$}\n", letter, width = 2 * index));
-        } else {
-            result.push('\n');
-        }
-    }
-    result
-}
-
-fn lower_diamond(letter: char) -> String {
-    let letters = letters_upto(letter);
-    let half_width = letters.len();
-    let mut result = String::new();
-    for (index, letter) in letters.iter().rev().skip(1).enumerate() {
-        let left = format!("{0:>width$}", letter, width = index + 2);
-        result.push_str(&left);
-        if index != half_width - 2 {
-            result.push_str(&format!(
-                "{0:>width$}\n",
-                letter,
-                width = 2 * (half_width - index - 2)
-            ));
         } else {
             result.push('\n');
         }
@@ -89,19 +76,6 @@ B B
   B B
  C   C
 D     D
-"
-            .trim()
-        );
-    }
-
-    #[test]
-    fn diamond_lower_four_rows() {
-        assert_eq!(
-            lower_diamond('D').trim(),
-            "
- C   C
-  B B
-   A
 "
             .trim()
         );
